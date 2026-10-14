@@ -2,7 +2,11 @@
 
 Landing page for Rubber Mind, served by GitHub Pages at https://rubbermind.ai.
 
-Everything lives in `index.html` (styles and scripts are inline). Images: `logo.png`, `favicon.png`, `apple-touch-icon.png`.
+Everything lives in `index.html` (styles and scripts are inline). The hero: `foreground.webp` is the woven rubber planet (from the 6K artwork) with the two penguins from "Penguins Beneath the Woven Cosmos", grayscale except the scarf. Everything behind it (the rubber filament stream, galaxies made of rubber strands, loose strings, stars) is drawn live on a canvas in `index.html`.
+
+Palette: black, white and grays only, plus the light blue of the scarf and faint ice-blue wave highlights.
+
+Images: `logo.png` (the Rubber Mind logo, also the social preview), `favicon.png`, `apple-touch-icon.png`.
 
 ## Edit and preview
 

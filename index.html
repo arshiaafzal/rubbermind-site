@@ -18,7 +18,6 @@
 <link rel="icon" href="favicon.png" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="foreground.webp" as="image" type="image/webp">
-<link rel="preload" href="milkyway.webp" as="image" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -49,23 +48,9 @@ nav .in{display:flex;align-items:center;justify-content:space-between;padding:28
 
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100vh;min-height:100svh;overflow:hidden}
-/* layers, back to front: generated sky (Milky Way, galaxies) → star & wave canvas → photographed moon and penguins */
-.sky{position:absolute;inset:0;z-index:-4;pointer-events:none;overflow:hidden;
-  -webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
-.mw{position:absolute;width:140%;left:-20%;top:-26%;opacity:.92;will-change:transform;animation:drift 300s ease-in-out infinite alternate}
-@keyframes drift{from{transform:rotate(-3deg) scale(1.02)}to{transform:rotate(3deg) scale(1.06)}}
-.gal{position:absolute;will-change:transform}
-.gal img{display:block;width:100%;height:100%;will-change:transform;animation:spin 360s linear infinite}
-.gal.b img{animation-duration:520s;animation-direction:reverse}
-.gal.c img{animation-duration:440s}
-@keyframes spin{to{transform:rotate(360deg)}}
-.g1{right:9%;top:7%;width:clamp(150px,17vw,280px);aspect-ratio:1;transform:rotate(-24deg) scaleY(.42)}
-.g2{right:4%;top:58%;width:clamp(70px,8vw,130px);aspect-ratio:1;transform:rotate(32deg) scaleY(.34)}
-.g3{left:31%;top:17%;width:clamp(44px,4.5vw,76px);aspect-ratio:1;transform:rotate(12deg) scaleY(.55);opacity:.8}
-.shade{position:absolute;inset:0;background:radial-gradient(ellipse 48% 58% at 74% 46%,#000000c2 0%,#00000070 55%,transparent 80%)}   /* quiet the Milky Way behind the copy */
-.fg{position:absolute;inset:0;z-index:-1;pointer-events:none}
-.fg img{width:100%;height:100%;display:block;object-fit:cover;object-position:left bottom;
-  -webkit-mask-image:linear-gradient(#000 86%,transparent);mask-image:linear-gradient(#000 86%,transparent)}   /* moon + penguins from the artwork; my sky shows through */
+/* rubber planet + seated figure, cut from the artwork; the generated rubber cosmos shows through */
+.fg{position:absolute;left:0;right:0;bottom:0;z-index:-1;pointer-events:none}
+.fg img{width:100%;height:auto;display:block;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
 .copy{position:relative;z-index:2;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   margin-left:auto;width:min(740px,48vw);margin-right:clamp(24px,7vw,120px);padding:120px 0 22vh}
 .copy .yc{margin-bottom:34px;color:var(--g1)}
@@ -107,11 +92,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;displa
 .d1{transition-delay:.15s}.d2{transition-delay:.3s}.d3{transition-delay:.45s}
 
 @media (max-width:900px){
-  .fg{top:auto;height:min(118vw,64svh)}
-  .fg img{transform:scale(1.3);transform-origin:14% 100%}
-  .mw{width:320%;left:-150%;top:-6%}
-  .shade{background:linear-gradient(#000000c9 0%,#00000099 45%,transparent 68%)}
-  .g1{right:4%;top:44%}.g3{display:none}
+  .fg{left:-14vw;right:auto;width:190vw}
   .copy{width:auto;margin:0;padding:120px 24px 0;justify-content:flex-start;min-height:0}
   .hero{display:flex;flex-direction:column;min-height:100svh}
   .hero::after{content:"";flex:1;min-height:min(104vw,56svh)}
@@ -119,7 +100,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;displa
   .people{grid-template-columns:1fr}
   .team{padding-top:110px}
 }
-@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.mw,.gal img{animation:none}}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
@@ -139,14 +120,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;displa
 </nav>
 
 <header class="hero">
-  <div class="sky" aria-hidden="true">
-    <img class="mw" src="milkyway.webp" alt="" width="3000" height="1900" decoding="async">
-    <div class="gal g1"><img src="galaxy-a.webp" alt="" decoding="async"></div>
-    <div class="gal b g2"><img src="galaxy-b.webp" alt="" decoding="async"></div>
-    <div class="gal c g3"><img src="galaxy-b.webp" alt="" decoding="async"></div>
-    <div class="shade"></div>
-  </div>
-  <div class="fg" aria-hidden="true"><img src="foreground.webp" alt="" width="3600" height="2704" decoding="async" fetchpriority="high"></div>
+  <div class="fg" aria-hidden="true"><img src="foreground.webp" alt="" width="3600" height="1090" decoding="async" fetchpriority="high"></div>
 
   <div class="copy">
     <a class="yc reveal" href="https://www.ycombinator.com" target="_blank" rel="noopener"><svg><use href="#yc"/></svg>Backed by Y Combinator</a>
@@ -193,98 +167,162 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold: .12});
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-// ---------- deep space: quiet stars and slow rubber waves ----------
+// ---------- rubber cosmos: every string and galaxy is made of thin elastic strands ----------
+// A stream of looping rubber filaments rises from behind the planet toward the upper right,
+// twisting into slowly turning spiral galaxies; loose rubber strings drift through the stars.
 (() => {
   const cv = document.getElementById('stars'), ctx = cv.getContext('2d');
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const TAU = Math.PI * 2;
-  let W, H, dpr, stars = [];
-
-  // Each wave is a ribbon of fine strands: a band of rubber twisting through the stars.
-  // twistSpeed / swaySpeed are radians per second; the twist nodes glide along each ribbon at roughly 25-45 px/s.
-  const waves = [
-    {a: [-.05, .14], c1: [.25, -.02], c2: [.55, .20], b: [1.05, .02], width: .085, strands: 24, twist: 2.2, twistSpeed: .42, swaySpeed: .22, alpha: .10},
-    {a: [-.05, .52], c1: [.10, .30], c2: [.30, .10], b: [.62, -.10],  width: .045, strands: 16, twist: 1.4, twistSpeed: -.34, swaySpeed: .2, alpha: .06},
-    {a: [.86, -.05], c1: [.95, .20], c2: [.84, .36], b: [1.05, .50], width: .04,  strands: 14, twist: 1.2, twistSpeed: .3, swaySpeed: -.18, alpha: .055},
-    {a: [.62, .80], c1: [.75, .58], c2: [.90, .72], b: [1.05, .55],  width: .05,  strands: 18, twist: 1.3, twistSpeed: -.38, swaySpeed: .24, alpha: .07},
-    {a: [-.05, .95], c1: [.30, .62], c2: [.62, .98], b: [1.05, .86], width: .07,  strands: 20, twist: 1.8, twistSpeed: .32, swaySpeed: .16, alpha: .06},
-  ];
-  // ...plus a seeded family of finer ribbons drifting across the whole sky
-  (() => {
-    let seed = 7; const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    for (let i = 0; i < 13; i++) {
-      const y0 = r() * 1.1 - .05, y1 = r() * 1.1 - .05, left = r() < .5;
-      waves.push({
-        a: left ? [-.08, y0] : [r() * .6, -.08],
-        c1: [.2 + r() * .3, r() * 1.0], c2: [.5 + r() * .3, r() * 1.0],
-        b: left ? [1.08, y1] : [1.08, .3 + r() * .7],
-        width: .02 + r() * .045, strands: 9 + Math.floor(r() * 9), twist: .8 + r() * 1.8,
-        twistSpeed: (r() < .5 ? -1 : 1) * (.22 + r() * .26), swaySpeed: (r() < .5 ? -1 : 1) * (.12 + r() * .16),
-        alpha: .03 + r() * .035,
-      });
-    }
-  })();
+  let W, H, dpr, mobile, stars = [], glitter = [], stream = [], strings = [], galaxies = [], sp = [], sn = [], st = [];
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const bez = (p0, p1, p2, p3, s) => { const q = 1 - s; return q * q * q * p0 + 3 * q * q * s * p1 + 3 * q * s * s * p2 + s * s * s * p3; };
+  const STREAM = {a: [-.06, .50], c1: [.22, .26], c2: [.55, .16], b: [1.06, .02]};
+  const VORTEX_S = [.20, .40, .80];                         // where the stream knots into galaxies
   const copyEls = [...document.querySelectorAll('.copy h1, .copy .lead')];
 
   function build() {
     dpr = Math.min(devicePixelRatio || 1, 2);
-    W = innerWidth; H = innerHeight;
+    W = innerWidth; H = innerHeight; mobile = W < 700;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = Math.round(Math.min(700, W * H / 2600));
-    stars = Array.from({length: n}, () => {
-      const m = Math.random() ** 6;                         // most stars faint, a few bright
-      return {x: Math.random() * W, y: Math.random() * H, r: .35 + m * 1.25, a: .18 + m * .75, p: Math.random() * TAU, s: .25 + Math.random() * .6};   // twinkle, rad/s
+    seed = 11;
+    const U = Math.min(W, H * 1.6);                          // layout unit
+
+    stars = Array.from({length: Math.round(Math.min(650, W * H / 2800))}, () => {
+      const m = rnd() ** 6;
+      return {x: rnd() * W, y: rnd() * H, r: .35 + m * 1.2, a: .16 + m * .75, p: rnd() * TAU, s: .25 + rnd() * .6};
+    });
+
+    // stream centreline
+    const N = mobile ? 300 : 560; sp = []; sn = []; st = [];
+    for (let i = 0; i <= N; i++) { const s = i / N; sp.push([bez(STREAM.a[0], STREAM.c1[0], STREAM.c2[0], STREAM.b[0], s) * W, bez(STREAM.a[1], STREAM.c1[1], STREAM.c2[1], STREAM.b[1], s) * H]); }
+    for (let i = 0; i <= N; i++) {
+      const a = sp[Math.max(0, i - 1)], b = sp[Math.min(N, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1;
+      st.push([dx / l, dy / l]); sn.push([-dy / l, dx / l]);
+    }
+    const at = s => sp[Math.round(s * N)];
+
+    // galaxies: three knotted into the stream, three drifting free
+    galaxies = VORTEX_S.map((s, i) => ({x: at(s)[0], y: at(s)[1], R: U * [.07, .095, .065][i], tilt: [-.5, -.35, -.6][i], incl: [.42, .5, .38][i], arms: [2, 3, 2][i], spin: [.035, -.028, .04][i], swirl: [1.6, 1.9, 1.5][i], core: 1}));
+    const free = mobile ? [[.86, .40, .07, .3, .45], [.12, .14, .05, -.2, .55]] :
+                          [[.93, .52, .045, .4, .42], [.10, .10, .04, -.25, .55], [.80, .86, .04, .6, .4]];
+    for (const [fx, fy, fr, tilt, incl] of free) galaxies.push({x: fx * W, y: fy * H, R: U * fr, tilt, incl, arms: 2 + (rnd() < .5 ? 1 : 0), spin: (rnd() < .5 ? -1 : 1) * (.03 + rnd() * .02), swirl: 0, core: .7});
+    for (const g of galaxies) {
+      g.strands = [];
+      const per = mobile ? 4 : 7;
+      for (let a = 0; a < g.arms; a++) for (let k = 0; k < per; k++)
+        g.strands.push({arm: a * TAU / g.arms, d: (rnd() - .5) * .55, wind: 2.3 + rnd() * .9, len: .65 + rnd() * .35, wob: rnd() * TAU,
+                        loopA: rnd() < .45 ? 0 : .012 + rnd() * .03, loopF: 6 + rnd() * 10, loopV: (rnd() < .5 ? -1 : 1) * (.25 + rnd() * .35), alpha: .12 + rnd() * .22, w: .5 + rnd() * .6});
+    }
+
+    // stream filaments
+    stream = Array.from({length: mobile ? 34 : 76}, () => {
+      const s0 = rnd() * .45, s1 = Math.min(1, s0 + .35 + rnd() * .7);
+      return {o: (rnd() * 2 - 1) * Math.sqrt(rnd()), wob: .15 + rnd() * .45, wf: 1 + rnd() * 2.5, wp: rnd() * TAU, s0, s1,
+              loopA: rnd() < .35 ? 0 : (4 + rnd() * 14) * U / 1200, loopF: 7 + rnd() * 16, loopP: rnd() * TAU, loopV: (rnd() < .5 ? -1 : 1) * (.2 + rnd() * .4),
+              alpha: .05 + rnd() * .17, w: .45 + rnd() * .7, ice: rnd() < .06};
+    });
+    // loose rubber strings elsewhere in the sky
+    strings = Array.from({length: mobile ? 5 : 9}, () => {
+      const y0 = rnd(), y1 = rnd();
+      return {a: [-.08, y0], c1: [.2 + rnd() * .3, rnd()], c2: [.5 + rnd() * .3, rnd()], b: [1.08, y1], loopA: (2 + rnd() * 5) * U / 1200, loopF: 8 + rnd() * 14,
+              loopV: (rnd() < .5 ? -1 : 1) * (.15 + rnd() * .3), wob: rnd() * TAU, alpha: .045 + rnd() * .06, w: .6 + rnd() * .5};
+    });
+    // glitter caught in the stream
+    glitter = Array.from({length: mobile ? 160 : 380}, () => {
+      const s = rnd(), i = Math.round(s * N), off = (rnd() * 2 - 1) * (rnd() ** 1.5) * halfAt(s);
+      return {x: sp[i][0] + sn[i][0] * off, y: sp[i][1] + sn[i][1] * off, r: .4 + rnd() ** 4 * 1.6, a: .25 + rnd() * .6, p: rnd() * TAU, s: .4 + rnd() * 1.2};
     });
     if (still) draw(0);
   }
+  function halfAt(s) {                                       // stream half-width, swelling around the galaxies
+    let h = .05; for (const v of VORTEX_S) h += .03 * Math.exp(-(((s - v) / .07) ** 2));
+    return h * Math.min(W, H * 1.6) * (.4 + .6 * Math.sin(Math.PI * Math.min(1, s * 1.1 + .05)));
+  }
 
-  const bez = (p0, p1, p2, p3, s) => { const q = 1 - s; return q * q * q * p0 + 3 * q * q * s * p1 + 3 * q * s * s * p2 + s * s * s * p3; };
+  function swirl(x, y, time) {                               // filaments near a galaxy wrap around it
+    for (let k = 0; k < VORTEX_S.length; k++) {
+      const g = galaxies[k], dx = x - g.x, dy = y - g.y, d2 = dx * dx + dy * dy, R = g.R * .55;
+      const f = g.swirl * Math.exp(-Math.sqrt(d2) / R) * (1 + .12 * Math.sin(time * .07 + k));
+      if (f > .002) { const c = Math.cos(f), s = Math.sin(f); x = g.x + dx * c - dy * s; y = g.y + dx * s + dy * c; }
+    }
+    return [x, y];
+  }
 
-  function strand(w, pts, nrm, half, v, time) {
-    const N = pts.length - 1;
-    ctx.beginPath();
-    for (let i = 0; i <= N; i++) {
-      const s = i / N, env = Math.sin(Math.PI * s) ** .8;
-      const off = v * half * Math.cos(s * TAU * w.twist + time * w.twistSpeed) * env + Math.sin(s * 9 + time * w.swaySpeed) * half * .25 * env;
-      const x = pts[i][0] + nrm[i][0] * off, y = pts[i][1] + nrm[i][1] * off;
-      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  function drawStream(time) {
+    const N = sp.length - 1;
+    for (const f of stream) {
+      const i0 = Math.floor(f.s0 * N), i1 = Math.ceil(f.s1 * N);
+      ctx.beginPath();
+      for (let i = i0; i <= i1; i++) {
+        const s = i / N, h = halfAt(s);
+        const off = h * (f.o + f.wob * Math.sin(s * TAU * f.wf + f.wp + time * .03));
+        const th = s * f.loopF * TAU + f.loopP + time * f.loopV;
+        const lx = f.loopA * Math.cos(th), ly = f.loopA * Math.sin(th);
+        let x = sp[i][0] + sn[i][0] * (off + ly) + st[i][0] * lx, y = sp[i][1] + sn[i][1] * (off + ly) + st[i][1] * lx;
+        [x, y] = swirl(x, y, time);
+        i === i0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.lineWidth = f.w;
+      ctx.strokeStyle = f.ice ? `rgba(191,220,240,${f.alpha * 1.3})` : `rgba(255,255,255,${f.alpha})`;
+      ctx.stroke();
     }
   }
 
-  function wave(w, time) {
-    const N = W < 700 ? 80 : 130, pts = [];
-    for (let i = 0; i <= N; i++) {
-      const s = i / N;
-      pts.push([bez(w.a[0], w.c1[0], w.c2[0], w.b[0], s) * W, bez(w.a[1], w.c1[1], w.c2[1], w.b[1], s) * H]);
+  function drawGalaxy(g, time) {
+    const rot = time * g.spin, ct = Math.cos(g.tilt), stt = Math.sin(g.tilt), M = mobile ? 44 : 70;
+    for (const s of g.strands) {
+      ctx.beginPath();
+      for (let k = 0; k <= M; k++) {
+        const u = k / M * s.len, r = g.R * (.05 + .95 * u);
+        const th = s.arm + s.d * (1 - u * .4) + s.wind * Math.log(1 + 7 * u) + rot + .05 * Math.sin(u * 9 + s.wob);
+        const lp = u * s.loopF * TAU + time * s.loopV, la = s.loopA * g.R;
+        const px = Math.cos(th) * r + la * Math.cos(lp), py = (Math.sin(th) * r + la * Math.sin(lp)) * g.incl;
+        const x = g.x + px * ct - py * stt, y = g.y + px * stt + py * ct;
+        k ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.lineWidth = s.w; ctx.strokeStyle = `rgba(255,255,255,${s.alpha * g.core})`; ctx.stroke();
     }
-    const nrm = pts.map((p, i) => { const a = pts[Math.max(0, i - 1)], b = pts[Math.min(N, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [-dy / l, dx / l]; });
-    const half = w.width * Math.min(W, H * 1.6) / 2;
-    ctx.lineWidth = .7;
-    for (let k = 0; k < w.strands; k++) {
-      const v = k / (w.strands - 1) * 2 - 1;                   // position across the band, -1..1
-      strand(w, pts, nrm, half, v, time);
-      ctx.strokeStyle = `rgba(255,255,255,${w.alpha * (1 - Math.abs(v) * .6)})`;
-      ctx.stroke();
-    }
-    // the outer edges catch a faint ice-blue light, like the sheen on stretched rubber
-    ctx.lineWidth = 1;
-    for (const v of [-1, 1]) {
-      strand(w, pts, nrm, half, v, time);
-      ctx.strokeStyle = `rgba(191,220,240,${w.alpha * 1.6})`; ctx.stroke();
+    const cg = ctx.createRadialGradient(g.x, g.y, 0, g.x, g.y, g.R * .5);
+    cg.addColorStop(0, `rgba(255,255,255,${.95 * g.core})`); cg.addColorStop(.12, `rgba(250,250,250,${.6 * g.core})`); cg.addColorStop(.4, `rgba(230,230,230,${.12 * g.core})`); cg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = cg; ctx.save(); ctx.translate(g.x, g.y); ctx.rotate(g.tilt); ctx.scale(1, g.incl * 1.3);
+    ctx.beginPath(); ctx.arc(0, 0, g.R * .5, 0, TAU); ctx.fill(); ctx.restore();
+  }
+
+  function drawStrings(time) {
+    const M = mobile ? 110 : 190;
+    for (const w of strings) {
+      ctx.beginPath();
+      let px = 0, py = 0;
+      for (let k = 0; k <= M; k++) {
+        const s = k / M, x0 = bez(w.a[0], w.c1[0], w.c2[0], w.b[0], s) * W, y0 = bez(w.a[1], w.c1[1], w.c2[1], w.b[1], s) * H;
+        const th = s * w.loopF * TAU + time * w.loopV + w.wob, a = w.loopA * Math.sin(Math.PI * s);
+        const x = x0 + a * Math.cos(th), y = y0 + a * Math.sin(th) + Math.sin(s * 5 + time * .04 + w.wob) * 14;
+        k ? ctx.lineTo(x, y) : ctx.moveTo(x, y); px = x; py = y;
+      }
+      ctx.lineWidth = w.w; ctx.strokeStyle = `rgba(255,255,255,${w.alpha})`; ctx.stroke();
     }
   }
 
   function draw(time) {
     ctx.clearRect(0, 0, W, H);
-    const list = W < 700 ? waves.slice(0, 9) : waves;
-    for (const w of list) wave(w, time);
-    // let the ribbons thin out behind the headline so the type stays clean
+    ctx.globalCompositeOperation = 'lighter';                // overlapping rubber glows brighter, like the artwork
+    drawStrings(time);
+    drawStream(time);
+    for (const g of galaxies) drawGalaxy(g, time);
+    ctx.fillStyle = '#fff';
+    for (const p of glitter) {
+      ctx.globalAlpha = p.a * (.55 + .45 * Math.sin(time * p.s + p.p));
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, TAU); ctx.fill();
+    }
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    // let the strands thin out behind the headline so the type stays clean
     const r0 = copyEls[0].getBoundingClientRect(), r1 = copyEls[1].getBoundingClientRect();
     if (r1.bottom > 0 && r0.top < H) {
       const cx = (r0.left + r1.right) / 2, cy = (r0.top + r1.bottom) / 2, rx = (Math.max(r0.right, r1.right) - Math.min(r0.left, r1.left)) * .62, ry = (r1.bottom - r0.top) * .62;
       ctx.save(); ctx.translate(cx, cy); ctx.scale(1, ry / rx);
       const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
-      g.addColorStop(0, 'rgba(0,0,0,.85)'); g.addColorStop(.7, 'rgba(0,0,0,.6)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      g.addColorStop(0, 'rgba(0,0,0,.88)'); g.addColorStop(.7, 'rgba(0,0,0,.62)'); g.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.globalCompositeOperation = 'destination-out'; ctx.fillStyle = g; ctx.fillRect(-rx, -rx, rx * 2, rx * 2);
       ctx.restore(); ctx.globalCompositeOperation = 'source-over';
     }
@@ -296,8 +334,9 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     ctx.globalAlpha = 1;
   }
 
+  let last = 0;
   function frame(now) {
-    draw(now / 1000);                                         // seconds
+    if (now - last > 30) { last = now; draw(now / 1000); }    // ~30fps is plenty for slow motion
     requestAnimationFrame(frame);
   }
   build(); addEventListener('resize', build);

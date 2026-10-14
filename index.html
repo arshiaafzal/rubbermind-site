@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="foreground.webp?v=rubber3" as="image" type="image/webp">
+<link rel="preload" href="foreground.webp?v=rubber4" as="image" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -47,6 +47,7 @@ nav .in{display:flex;align-items:center;justify-content:space-between;padding:28
 .hero{position:relative;min-height:100vh;min-height:100svh;overflow:hidden}
 /* rubber planet + seated figure, cut from the artwork; the generated rubber cosmos shows through */
 .fg{position:absolute;left:0;right:0;bottom:0;z-index:-1;pointer-events:none}
+.fg .tail{position:absolute;left:30.4167%;top:17.0642%;width:8.8056%;height:24.4037%}   /* the scarf's free end, animated in the wind */
 .fg img{width:100%;height:auto;display:block;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
 .copy{position:relative;z-index:2;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   margin-left:auto;width:min(740px,48vw);margin-right:clamp(24px,7vw,120px);padding:120px 0 22vh}
@@ -117,7 +118,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;displa
 </nav>
 
 <header class="hero">
-  <div class="fg" aria-hidden="true"><img src="foreground.webp?v=rubber3" alt="" width="3600" height="1090" decoding="async" fetchpriority="high"></div>
+  <div class="fg" aria-hidden="true"><img src="foreground.webp?v=rubber4" alt="" width="3600" height="1090" decoding="async" fetchpriority="high"><canvas class="tail"></canvas></div>
 
   <div class="copy">
     <a class="yc reveal" href="https://www.ycombinator.com" target="_blank" rel="noopener"><svg><use href="#yc"/></svg>Backed by Y Combinator</a>
@@ -301,6 +302,38 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     }
   }
 
+  // ---------- the scarf's free end swings in the wind ----------
+  // wave displacement (in foreground-image px) for a column u px from where the scarf leaves the neck
+  const TAIL_X0 = 1095, TAIL_LEN = 272;
+  function scarfDY(u, t) {
+    const d = Math.max(0, Math.min(1, (u - 5) / TAIL_LEN)), gust = .75 + .25 * Math.sin(t * .37);
+    return gust * (8 * d ** 1.5 * Math.sin(t * 1.5 - d * 4.2) + 3.5 * d * d * Math.sin(t * 2.6 - d * 7.5 + 1));
+  }
+  const tailCv = document.querySelector('.fg .tail'), tctx = tailCv.getContext('2d'), tailImg = new Image();
+  tailImg.src = 'scarf-tail.png?v=1';
+  function drawTail(t) {
+    if (!tailImg.complete || !tailImg.naturalWidth) return;
+    const cw = tailCv.clientWidth, ch = tailCv.clientHeight; if (!cw) return;
+    const q = Math.min(devicePixelRatio || 1, 2), iw = tailImg.naturalWidth, ih = tailImg.naturalHeight;
+    if (tailCv.width !== Math.round(cw * q)) { tailCv.width = Math.round(cw * q); tailCv.height = Math.round(ch * q); }
+    const k = tailCv.width / iw;
+    tctx.clearRect(0, 0, tailCv.width, tailCv.height);
+    const step = 2;
+    for (let x = 0; x < iw; x += step) {
+      const dy = scarfDY(x + 1, t);
+      tctx.drawImage(tailImg, x, 0, step, ih, x * k, dy * k, step * k + .6, ih * k);
+    }
+    // the cloth catches more light where it tilts toward the moon
+    tctx.globalCompositeOperation = 'source-atop';
+    for (let x = 0; x < iw; x += step) {
+      const slope = scarfDY(x + 3, t) - scarfDY(x - 1, t);
+      tctx.globalAlpha = Math.min(.35, Math.abs(slope) * .18); tctx.fillStyle = slope < 0 ? '#fff' : '#000';
+      tctx.fillRect(x * k, 0, step * k + .6, tailCv.height);
+    }
+    tctx.globalAlpha = 1; tctx.globalCompositeOperation = 'source-over';
+  }
+  tailImg.onload = () => drawTail(performance.now() / 1000);
+
   // ---------- the scarf unravels into the cosmos: rubber strands run from its tails into the nearest galaxy ----------
   const fgImg = document.querySelector('.fg img');
   const SCARF_TIPS = [[.366, .287], [.352, .345]];             // tail tips, as fractions of the foreground image
@@ -308,7 +341,8 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   function drawScarf(time) {
     const r = fgImg.getBoundingClientRect();
     if (!r.width || r.bottom < 0 || r.top > H) return;
-    const tips = SCARF_TIPS.map(([fx, fy]) => [r.left + fx * r.width, r.top + fy * r.height]);
+    const sc = r.width / 3600;
+    const tips = SCARF_TIPS.map(([fx, fy]) => [r.left + fx * r.width, r.top + fy * r.height + scarfDY(fx * 3600 - TAIL_X0, time) * sc]);
     const aim = [tips[0][0] + W * .12, tips[0][1] - H * .35];
     let g = galaxies[0], best = 1e12;
     for (let k = 0; k < VORTEX_S.length; k++) { const d = (galaxies[k].x - aim[0]) ** 2 + (galaxies[k].y - aim[1]) ** 2; if (d < best) { best = d; g = galaxies[k]; } }
@@ -370,7 +404,7 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
   let last = 0;
   function frame(now) {
-    if (now - last > 30) { last = now; draw(now / 1000); }    // ~30fps is plenty for slow motion
+    if (now - last > 30) { last = now; draw(now / 1000); drawTail(now / 1000); }    // ~30fps is plenty for slow motion
     requestAnimationFrame(frame);
   }
   build(); addEventListener('resize', build);

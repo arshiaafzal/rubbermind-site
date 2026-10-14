@@ -6,7 +6,7 @@ Everything lives in `index.html` (styles and scripts are inline). The hero: `for
 
 Palette: black, white and grays only, plus the light blue of the scarf and faint ice-blue wave highlights.
 
-Images: `logo.png` (256px badge), `logo-512.png` (hi-res), `favicon.png` / `favicon-32.png`, `apple-touch-icon.png`, `og.png` (social preview), all made from `pingo-source.png`.
+Images: `logo.png` (the Rubber Mind logo, also the social preview), `favicon.png`, `apple-touch-icon.png`.
 
 ## Edit and preview
 

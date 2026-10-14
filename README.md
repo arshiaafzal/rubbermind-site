@@ -2,7 +2,7 @@
 
 Landing page for Rubber Mind, served by GitHub Pages at https://rubbermind.ai.
 
-Everything lives in `index.html` (styles and scripts are inline). The hero is layered and fully generated: `milkyway.webp` and `galaxy-*.webp` are procedural sky textures (slowly rotated with CSS), stars and rubber waves are drawn live on a canvas, `foreground.webp` is the moon surface and penguins cut out of the 6K artwork (grayscale except the scarf).
+Everything lives in `index.html` (styles and scripts are inline). The hero: `foreground.webp` is the woven rubber planet (from the 6K artwork) with the two penguins composited on it, grayscale except the scarf. Everything behind it (the rubber filament stream, galaxies made of rubber strands, loose strings, stars) is drawn live on a canvas in `index.html`.
 
 Palette: black, white and grays only, plus the light blue of the scarf and faint ice-blue wave highlights.
 

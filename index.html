@@ -301,11 +301,48 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     }
   }
 
+  // ---------- the scarf unravels into the cosmos: rubber strands run from its tails into the nearest galaxy ----------
+  const fgImg = document.querySelector('.fg img');
+  const SCARF_TIPS = [[.366, .287], [.352, .345]];             // tail tips, as fractions of the foreground image
+  const scarfStrands = Array.from({length: 11}, (_, i) => ({tip: i % 2, ph: i * 1.7, spread: (i / 10 - .5), loopF: 3 + (i * 7) % 5, loopA: 3 + (i * 5) % 7, alpha: .16 + ((i * 3) % 4) * .05, w: .6 + (i % 3) * .25}));
+  function drawScarf(time) {
+    const r = fgImg.getBoundingClientRect();
+    if (!r.width || r.bottom < 0 || r.top > H) return;
+    const tips = SCARF_TIPS.map(([fx, fy]) => [r.left + fx * r.width, r.top + fy * r.height]);
+    const aim = [tips[0][0] + W * .12, tips[0][1] - H * .35];
+    let g = galaxies[0], best = 1e12;
+    for (let k = 0; k < VORTEX_S.length; k++) { const d = (galaxies[k].x - aim[0]) ** 2 + (galaxies[k].y - aim[1]) ** 2; if (d < best) { best = d; g = galaxies[k]; } }
+    const M = mobile ? 70 : 120;
+    for (const s of scarfStrands) {
+      const [x0, y0] = tips[s.tip];
+      const ang = s.ph + time * .06, ex = g.x + Math.cos(ang) * g.R * .45, ey = g.y + Math.sin(ang) * g.R * .45 * g.incl;
+      const c1x = x0 + W * .07 + s.spread * 50, c1y = y0 - 6 + s.spread * 70 + Math.sin(time * .5 + s.ph) * 12;   // keep blowing right…
+      const c2x = ex + W * .03 + s.spread * 220, c2y = ey + H * .20 + s.spread * 40;                                                 // …then rise into the stream
+      const grad = ctx.createLinearGradient(x0, y0, ex, ey);
+      grad.addColorStop(0, `rgba(191,220,240,${s.alpha * 2.2})`); grad.addColorStop(.45, `rgba(220,236,248,${s.alpha * 1.3})`); grad.addColorStop(1, `rgba(255,255,255,${s.alpha * .6})`);
+      ctx.beginPath();
+      for (let k = 0; k <= M; k++) {
+        const u = k / M, x = bez(x0, c1x, c2x, ex, u), y = bez(y0, c1y, c2y, ey, u);
+        const th = u * s.loopF * TAU + time * .35 + s.ph, a = s.loopA * Math.sin(Math.PI * u) * (.3 + u);
+        const px = x + a * Math.cos(th), py = y + a * Math.sin(th);
+        k ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      }
+      ctx.lineWidth = s.w; ctx.strokeStyle = grad; ctx.stroke();
+      // a few glints travelling from the scarf up into the galaxy
+      for (let j = 0; j < 2; j++) {
+        const u = ((time * .045 + s.ph * .37 + j * .5) % 1), x = bez(x0, c1x, c2x, ex, u), y = bez(y0, c1y, c2y, ey, u);
+        ctx.globalAlpha = Math.sin(Math.PI * u) * .8; ctx.fillStyle = u < .4 ? '#d8ecfa' : '#fff';
+        ctx.beginPath(); ctx.arc(x, y, 1.1, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+      }
+    }
+  }
+
   function draw(time) {
     ctx.clearRect(0, 0, W, H);
     ctx.globalCompositeOperation = 'lighter';                // overlapping rubber glows brighter, like the artwork
     drawStrings(time);
     drawStream(time);
+    drawScarf(time);
     for (const g of galaxies) drawGalaxy(g, time);
     ctx.fillStyle = '#fff';
     for (const p of glitter) {

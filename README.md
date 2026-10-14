@@ -2,7 +2,11 @@
 
 Landing page for Rubber Mind, served by GitHub Pages at https://rubbermind.ai.
 
-Everything lives in `index.html` (styles and scripts are inline). Images: `logo.png`, `favicon.png`, `apple-touch-icon.png`.
+Everything lives in `index.html` (styles and scripts are inline). The hero is layered and fully generated: `milkyway.webp` and `galaxy-*.webp` are procedural sky textures (slowly rotated with CSS), stars and rubber waves are drawn live on a canvas, `foreground.webp` is the moon surface and penguins cut out of the 6K artwork (grayscale except the scarf).
+
+Palette: black, white and grays only, plus the light blue of the scarf and faint ice-blue wave highlights.
+
+Images: `logo.png` (256px badge), `logo-512.png` (hi-res), `favicon.png` / `favicon-32.png`, `apple-touch-icon.png`, `og.png` (social preview), all made from `pingo-source.png`.
 
 ## Edit and preview
 

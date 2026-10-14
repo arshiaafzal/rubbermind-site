@@ -14,12 +14,12 @@
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="foreground.webp?v=rubber4" as="image" type="image/webp">
+<link rel="preload" href="foreground.webp?v=coffee1" as="image" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* Palette is strictly black, white and grays; the only colour is the faint ice blue of the scarf. */
+/* Palette is strictly black, white and grays; the only colour is the faint ice blue of the mug and highlights. */
 :root{
   --black:#000; --white:#fff;
   --g1:#e6e6e6; --g2:#b3b3b3; --g3:#8a8a8a; --g4:#5c5c5c; --g5:#2a2a2a; --g6:#141414;
@@ -47,7 +47,6 @@ nav .in{display:flex;align-items:center;justify-content:space-between;padding:28
 .hero{position:relative;min-height:100vh;min-height:100svh;overflow:hidden}
 /* rubber planet + seated figure, cut from the artwork; the generated rubber cosmos shows through */
 .fg{position:absolute;left:0;right:0;bottom:0;z-index:-1;pointer-events:none}
-.fg .tail{position:absolute;left:30.4167%;top:17.0642%;width:8.8056%;height:24.4037%}   /* the scarf's free end, animated in the wind */
 .fg img{width:100%;height:auto;display:block;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
 .copy{position:relative;z-index:2;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   margin-left:auto;width:min(740px,48vw);margin-right:clamp(24px,7vw,120px);padding:120px 0 22vh}
@@ -118,7 +117,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;displa
 </nav>
 
 <header class="hero">
-  <div class="fg" aria-hidden="true"><img src="foreground.webp?v=rubber4" alt="" width="3600" height="1090" decoding="async" fetchpriority="high"><canvas class="tail"></canvas></div>
+  <div class="fg" aria-hidden="true"><img src="foreground.webp?v=coffee1" alt="" width="3600" height="1090" decoding="async" fetchpriority="high"></div>
 
   <div class="copy">
     <a class="yc reveal" href="https://www.ycombinator.com" target="_blank" rel="noopener"><svg><use href="#yc"/></svg>Backed by Y Combinator</a>
@@ -302,81 +301,43 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     }
   }
 
-  // ---------- the scarf's free end swings in the wind ----------
-  // wave displacement (in foreground-image px) for a column u px from where the scarf leaves the neck
-  const TAIL_X0 = 1095, TAIL_LEN = 272;
-  function scarfDY(u, t) {
-    const d = Math.max(0, Math.min(1, (u - 5) / TAIL_LEN)), gust = .75 + .25 * Math.sin(t * .6);
-    return gust * (8 * d ** 1.5 * Math.sin(t * 2.5 - d * 4.2) + 3.5 * d * d * Math.sin(t * 4.2 - d * 7.5 + 1));
-  }
-  const tailCv = document.querySelector('.fg .tail'), tctx = tailCv.getContext('2d'), tailImg = new Image();
-  tailImg.src = 'scarf-tail.png?v=1';
-  function drawTail(t) {
-    if (!tailImg.complete || !tailImg.naturalWidth) return;
-    const cw = tailCv.clientWidth, ch = tailCv.clientHeight; if (!cw) return;
-    const q = Math.min(devicePixelRatio || 1, 2), iw = tailImg.naturalWidth, ih = tailImg.naturalHeight;
-    if (tailCv.width !== Math.round(cw * q)) { tailCv.width = Math.round(cw * q); tailCv.height = Math.round(ch * q); }
-    const k = tailCv.width / iw;
-    tctx.clearRect(0, 0, tailCv.width, tailCv.height);
-    const step = 2;
-    for (let x = 0; x < iw; x += step) {
-      const dy = scarfDY(x + 1, t);
-      tctx.drawImage(tailImg, x, 0, step, ih, x * k, dy * k, step * k + .6, ih * k);
-    }
-    // the cloth catches more light where it tilts toward the moon
-    tctx.globalCompositeOperation = 'source-atop';
-    for (let x = 0; x < iw; x += step) {
-      const slope = scarfDY(x + 3, t) - scarfDY(x - 1, t);
-      tctx.globalAlpha = Math.min(.35, Math.abs(slope) * .18); tctx.fillStyle = slope < 0 ? '#fff' : '#000';
-      tctx.fillRect(x * k, 0, step * k + .6, tailCv.height);
-    }
-    tctx.globalAlpha = 1; tctx.globalCompositeOperation = 'source-over';
-  }
-  tailImg.onload = () => drawTail(performance.now() / 1000);
-
-  // ---------- the scarf unravels into the cosmos: rubber strands run from its tails into the nearest galaxy ----------
+  // ---------- steam from the coffee rises, curls, and becomes the rubber stream ----------
   const fgImg = document.querySelector('.fg img');
-  const SCARF_TIPS = [[.366, .287], [.352, .345]];             // tail tips, as fractions of the foreground image
-  // fine fibres that tease loose from the fringe, ride the wind to the right and merge into the rubber stream
-  let fs = 29; const frnd = () => (fs = (fs * 16807) % 2147483647) / 2147483647;
-  const fibres = Array.from({length: 18}, () => ({tip: frnd() < .55 ? 0 : 1, off: frnd() * 2 - 1, len: .55 + frnd() * .45, join: frnd() * 2 - 1,
-    f1: 5 + frnd() * 6, f2: 13 + frnd() * 12, p1: frnd() * 6.3, p2: frnd() * 6.3, a1: 8 + frnd() * 16, a2: 2 + frnd() * 4,
-    alpha: .09 + frnd() * .2, w: .35 + frnd() * .45, lift: frnd()}));
-  function drawScarf(time) {
+  const MUG = [.2905, .186, .0205];                               // rim centre x, y and rim width, as fractions of the foreground image
+  let ss = 41; const srnd = () => (ss = (ss * 16807) % 2147483647) / 2147483647;
+  const wisps = Array.from({length: 16}, () => ({x: srnd() * 2 - 1, len: .45 + srnd() * .55, join: srnd() * 2 - 1, rise: .08 + srnd() * .1,
+    f1: 4 + srnd() * 5, f2: 11 + srnd() * 10, p1: srnd() * 6.3, p2: srnd() * 6.3, a1: 8 + srnd() * 18, a2: 1.5 + srnd() * 3.5,
+    v1: .6 + srnd() * .6, alpha: .07 + srnd() * .16, w: .4 + srnd() * .5, soft: srnd() < .55}));
+  function drawSteam(time) {
     const r = fgImg.getBoundingClientRect();
     if (!r.width || r.bottom < 0 || r.top > H) return;
-    const sc = r.width / 3600;
-    const tips = SCARF_TIPS.map(([fx, fy]) => [r.left + fx * r.width, r.top + fy * r.height + scarfDY(fx * 3600 - TAIL_X0, time) * sc]);
-    // where the fibres join the stream: the stream point nearest to a spot up-wind of the scarf
-    const aim = [tips[0][0] + W * .05, tips[0][1] - H * .36];
+    const mx = r.left + MUG[0] * r.width, my = r.top + MUG[1] * r.height, rim = MUG[2] * r.width;
+    const aim = [mx + W * .04, my - H * .34];
     let ji = 0, best = 1e12;
     for (let i = 0; i < sp.length; i++) { const d = (sp[i][0] - aim[0]) ** 2 + (sp[i][1] - aim[1]) ** 2; if (d < best) { best = d; ji = i; } }
     const M = mobile ? 70 : 120, hw = halfAt(ji / (sp.length - 1));
-    for (const f of fibres) {
-      const [tx, ty] = tips[f.tip], x0 = tx + f.off * 3, y0 = ty + f.off * 4;
-      const jx = sp[ji][0] + sn[ji][0] * f.join * hw * 1.6, jy = sp[ji][1] + sn[ji][1] * f.join * hw * 1.6;
-      const c1x = x0 + W * (.05 + .07 * f.lift), c1y = y0 + H * (.03 - .14 * f.lift);           // carried right by the wind…
-      const c2x = jx - st[ji][0] * W * .10 + W * .06 * (f.lift - .3), c2y = jy - st[ji][1] * W * .10 + H * .16;                       // …then drawn along the stream
+    for (const s of wisps) {
+      const x0 = mx + s.x * rim * .38, y0 = my + 3;
+      const jx = sp[ji][0] + sn[ji][0] * s.join * hw * 2.2, jy = sp[ji][1] + sn[ji][1] * s.join * hw * 2.2;
+      const c1x = x0 + s.x * W * .045, c1y = y0 - H * s.rise * 1.8;                           // fanning out as it rises                                   // steam rises straight up…
+      const c2x = jx - st[ji][0] * W * .10, c2y = jy - st[ji][1] * W * .10 + H * .12;          // …then is drawn into the stream
       const ex = jx + st[ji][0] * W * .05, ey = jy + st[ji][1] * W * .05;
       const grad = ctx.createLinearGradient(x0, y0, ex, ey);
-      grad.addColorStop(0, `rgba(191,220,240,${f.alpha * 2})`); grad.addColorStop(.5, `rgba(225,238,248,${f.alpha})`); grad.addColorStop(1, 'rgba(255,255,255,0)');
+      grad.addColorStop(0, 'rgba(255,255,255,0)'); grad.addColorStop(.03, `rgba(255,255,255,${s.alpha * 1.6})`);
+      grad.addColorStop(.5, `rgba(240,244,248,${s.alpha})`); grad.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.beginPath();
-      const N = Math.round(M * f.len);
-      let px = x0, py = y0;
+      const N = Math.round(M * s.len);
       for (let k = 0; k <= N; k++) {
         const u = k / M, x = bez(x0, c1x, c2x, ex, u), y = bez(y0, c1y, c2y, ey, u);
         const dx = bez(x0, c1x, c2x, ex, Math.min(1, u + .01)) - x, dy = bez(y0, c1y, c2y, ey, Math.min(1, u + .01)) - y, l = Math.hypot(dx, dy) || 1;
-        const amp = u ** 1.2, w = amp * (f.a1 * Math.sin(u * f.f1 + time * .7 + f.p1) + f.a2 * Math.sin(u * f.f2 - time * 1.3 + f.p2));   // irregular flutter, growing with distance
+        const amp = u ** .9, w = amp * (s.a1 * Math.sin(u * s.f1 - time * s.v1 + s.p1) + s.a2 * Math.sin(u * s.f2 - time * s.v1 * 2.2 + s.p2));   // curls travel upward
         let qx = x - dy / l * w, qy = y + dx / l * w;
         [qx, qy] = swirl(qx, qy, time);
         k ? ctx.lineTo(qx, qy) : ctx.moveTo(qx, qy);
       }
-      ctx.lineWidth = f.w; ctx.strokeStyle = grad; ctx.stroke();
-      const u = (time * .06 + f.p1) % 1;                                                           // one glint drifting up each fibre
-      if (u < f.len) {
-        ctx.globalAlpha = Math.sin(Math.PI * u / f.len) * .7; ctx.fillStyle = '#e4f1fa';
-        ctx.beginPath(); ctx.arc(bez(x0, c1x, c2x, ex, u), bez(y0, c1y, c2y, ey, u), .9, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
-      }
+      ctx.strokeStyle = grad;
+      if (s.soft) { ctx.lineWidth = 7; ctx.globalAlpha = .1; ctx.stroke(); ctx.lineWidth = 3; ctx.globalAlpha = .2; ctx.stroke(); ctx.globalAlpha = 1; }   // a few soft, vapour-like wisps
+      ctx.lineWidth = s.w; ctx.stroke();
     }
   }
 
@@ -385,7 +346,7 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     ctx.globalCompositeOperation = 'lighter';                // overlapping rubber glows brighter, like the artwork
     drawStrings(time);
     drawStream(time);
-    drawScarf(time);
+    drawSteam(time);
     for (const g of galaxies) drawGalaxy(g, time);
     ctx.fillStyle = '#fff';
     for (const p of glitter) {
@@ -413,7 +374,7 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
   let last = 0;
   function frame(now) {
-    if (now - last > 30) { last = now; draw(now / 1000); drawTail(now / 1000); }    // ~30fps is plenty for slow motion
+    if (now - last > 30) { last = now; draw(now / 1000); }    // ~30fps is plenty for slow motion
     requestAnimationFrame(frame);
   }
   build(); addEventListener('resize', build);

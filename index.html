@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rubber Mind — Frontier-level code at a fraction of the tokens</title>
-<meta name="description" content="Rubber Mind builds Smart Ask, which cuts the token cost of AI coding agents without lowering code quality. Works with Claude Code and Codex. Backed by Y Combinator.">
+<title>Rubber Mind — Small models. Frontier ambitions.</title>
+<meta name="description" content="We’re building small coding models designed to run entire agent sessions, consulting frontier models when needed, with the goal of delivering frontier-level coding at a fraction of the cost and compute.">
 <meta name="theme-color" content="#000000">
-<meta property="og:title" content="Rubber Mind — Frontier-level code at a fraction of the tokens">
-<meta property="og:description" content="Smart Ask cuts AI coding-agent token costs without compromising quality. Backed by Y Combinator.">
+<meta property="og:title" content="Rubber Mind — Small models. Frontier ambitions.">
+<meta property="og:description" content="Small coding models designed to run entire agent sessions, with the goal of delivering frontier-level coding at a fraction of the cost and compute.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://rubbermind.ai/">
 <meta property="og:image" content="https://rubbermind.ai/logo.png">
@@ -60,28 +60,7 @@ h1 span{color:var(--g3)}
   background:var(--white);color:var(--black);font-weight:500;font-size:15px;letter-spacing:-.005em;transition:background .3s,gap .3s}
 .contact:hover{background:var(--g1);gap:20px}
 .contact i{font-style:normal;transition:transform .3s}
-.scroll{position:absolute;right:clamp(24px,7vw,120px);bottom:32px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--g4);text-transform:uppercase}
-
-/* ---------- founders ---------- */
-.team{max-width:1180px;margin:0 auto;padding:160px clamp(24px,5vw,56px) 120px}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--g3)}
-h2{font-weight:400;font-size:clamp(32px,3.6vw,52px);line-height:1.08;letter-spacing:-.035em;margin-top:18px;max-width:16em}
-.sub{color:var(--g2);font-weight:300;font-size:18px;max-width:36em;margin-top:18px}
-.people{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);margin-top:80px;border-top:1px solid var(--g5);padding-top:48px}
-.person{display:flex;gap:22px;align-items:flex-start}
-.avatar{width:72px;height:72px;border-radius:50%;flex:none;overflow:hidden;background:var(--g5);box-shadow:0 0 0 1px #ffffff26}
-.avatar img{width:100%;height:100%;display:block;object-fit:cover;filter:grayscale(1) contrast(1.05)}   /* portraits stay within the monochrome palette */
-.person h3{font-size:22px;font-weight:500;letter-spacing:-.02em}
-.role{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--g3);margin:4px 0 14px}
-.person p{color:var(--g2);font-weight:300;font-size:16px}
-
-/* ---------- YC + footer ---------- */
-.ycblock{display:flex;align-items:center;justify-content:center;gap:18px;margin:120px auto 0;padding:40px 0;border-top:1px solid var(--g5);border-bottom:1px solid var(--g5);transition:border-color .3s}
-.ycblock:hover{border-color:var(--g4)}
-.ycblock svg{width:44px;height:44px}
-.ycblock .t1{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--g3);text-transform:uppercase}
-.ycblock .t2{font-size:24px;font-weight:500;letter-spacing:-.02em}
-footer{max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--g4);font-size:13px}
+footer{position:absolute;bottom:0;left:0;right:0;z-index:2;max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--g4);font-size:13px}
 
 /* reveal */
 .reveal{opacity:0;transform:translateY(16px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.2,.8,.2,1)}
@@ -93,9 +72,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;displa
   .copy{width:auto;margin:0;padding:120px 24px 0;justify-content:flex-start;min-height:0}
   .hero{display:flex;flex-direction:column;min-height:100svh}
   .hero::after{content:"";flex:1;min-height:min(104vw,56svh)}
-  .scroll{display:none}
-  .people{grid-template-columns:1fr}
-  .team{padding-top:110px}
+  footer{position:relative;order:1;width:100%;padding-bottom:24px}
 }
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
@@ -121,42 +98,16 @@ footer{max-width:1180px;margin:0 auto;padding:0 clamp(24px,5vw,56px) 48px;displa
 
   <div class="copy">
     <a class="yc reveal" href="https://www.ycombinator.com" target="_blank" rel="noopener"><svg><use href="#yc"/></svg>Backed by Y Combinator</a>
-    <h1 class="reveal d1">Frontier-level code.<br><span>A fraction of the tokens.</span></h1>
-    <p class="lead reveal d2"><b>Smart Ask</b> sends each step of a coding task to the smallest model that can handle it, cutting your agent's token bill without lowering code quality. It works inside the agents you already use, like Claude Code and Codex.</p>
-    <a class="contact reveal d3" href="mailto:hello@rubbermind.ai?subject=Rubber%20Mind">Contact us <i>→</i></a>
+    <h1 class="reveal d1">Small models.<br><span>Frontier ambitions.</span></h1>
+    <p class="lead reveal d2">We’re building small coding models designed to run entire agent sessions—from understanding a codebase to editing files and running tools. They handle the work themselves, consulting frontier models when needed, with the goal of delivering frontier-level coding at a fraction of the cost and compute.</p>
+    <a class="contact reveal d3" href="mailto:contact@rubbermind.ai?subject=Rubber%20Mind">Contact us <i>→</i></a>
   </div>
-  <div class="scroll" aria-hidden="true">Team ↓</div>
-</header>
-
-<section class="team" id="team">
-  <div class="reveal">
-    <div class="eyebrow">Team</div>
-    <h2>Researchers who build the models themselves.</h2>
-    <p class="sub">We've pre-trained large models and designed efficient architectures. Now we're making small agents do big work.</p>
-  </div>
-  <div class="people">
-    <div class="person reveal">
-      <div class="avatar"><img src="team/arshia.jpg" alt="Arshia Afzal" width="320" height="320" loading="lazy"></div>
-      <div><h3>Arshia Afzal</h3><div class="role">CO-FOUNDER &amp; CEO</div>
-      <p>PhD student in Electrical Engineering (EDEE) at EPFL, advised by Volkan Cevher. At Mistral AI, he worked on architecture design and large-scale pre-training for next-generation hybrid models. He authored Raven, LION, and Selective RoPE, published at ICML, NeurIPS, and ICLR. He won a national gold medal in the Physics Olympiad and bronze at IPhO 2018.</p></div>
-    </div>
-    <div class="person reveal d1">
-      <div class="avatar"><img src="team/aviv.jpg" alt="Aviv Bick" width="320" height="320" loading="lazy"></div>
-      <div><h3>Aviv Bick</h3><div class="role">CO-FOUNDER &amp; CTO</div>
-      <p>CS PhD student at Carnegie Mellon, advised by Albert Gu and Eric Xing, working on efficient sequence-model architectures that cut LLM cost without losing capability. He worked on Nemotron's hybrid architectures at NVIDIA and shipped Llamba-1B (20K+ downloads) at Cartesia AI. His work includes MOHAWK, Retrieval-Aware Distillation, Mamba-3, and Raven, published at NeurIPS, ICML, and ICLR.</p></div>
-    </div>
-  </div>
-
-  <a class="ycblock reveal" href="https://www.ycombinator.com" target="_blank" rel="noopener">
-    <svg><use href="#yc"/></svg>
-    <div><div class="t1">Backed by</div><div class="t2">Y Combinator</div></div>
-  </a>
-</section>
 
 <footer>
   <span>© <span id="yr"></span> Rubber Mind, Inc. · San Francisco</span>
-  <a href="mailto:hello@rubbermind.ai">hello@rubbermind.ai</a>
+  <a href="mailto:contact@rubbermind.ai">contact@rubbermind.ai</a>
 </footer>
+</header>
 
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();

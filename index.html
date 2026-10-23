@@ -168,6 +168,9 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     dpr = Math.min((devicePixelRatio || 1) * Math.max(1, z), 4);
     const cw = Math.round(W * dpr), ch = Math.round(H * dpr);
     if (cv.width !== cw || cv.height !== ch) { cv.width = cw; cv.height = ch; }
+    // pin the canvas's CSS size to the size we draw at: on phones 100vh is the *tall* viewport (toolbars hidden),
+    // which would stretch the drawing vertically and push the steam below the mug
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   function build() {
@@ -358,7 +361,7 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   }
   function drawSteam(time) {
     const r = fgImg.getBoundingClientRect();
-    if (!r.width || r.bottom < 0 || r.top > H) return;
+    if (!r.width || r.bottom < 0 || r.top > H || !fgImg.complete) return;      // no steam until the mug is on screen
     if (mobile) return drawSteamPhone(time, r);
     const mx = r.left + MUG[0] * r.width, my = r.top + MUG[1] * r.height, rim = MUG[2] * r.width;
     const aim = [mx + W * .04, my - H * .34];
